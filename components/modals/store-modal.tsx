@@ -7,7 +7,7 @@ import Modal from './modal';
 import { useStoremodal } from '@/hooks/use-store-modal';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
@@ -71,6 +71,7 @@ const StoreModal = () => {
 
                             </Input>
                           </FormControl>
+                          <FormMessage/>
 
 
                         </FormItem>
