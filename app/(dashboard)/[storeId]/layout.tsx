@@ -2,6 +2,7 @@ import React from 'react'
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import prismadb from '@/lib/prismadb'
+import Navbar from '@/components/Navbar'
 
 interface LayoutStoreIdProps{
     children :React.ReactNode
@@ -29,6 +30,7 @@ const StoreId =  async ({children}:LayoutStoreIdProps) => {
 
   return (
     <div>
+        <Navbar/>
         {children}
     </div>
   )
