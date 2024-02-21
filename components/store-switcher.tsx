@@ -119,6 +119,18 @@ const StoreSwitcher = ({items}: StoreSwitcherProps) => {
           
         </CommandGroup>
         <CommandSeparator />
+        <CommandGroup>
+          <CommandItem 
+          onSelect={()=>{
+            setOpen(false)
+            storeModal.onOpen()
+          }}>
+            <span>New Strore</span>
+          </CommandItem>
+        
+        </CommandGroup>
+
+
       
       </CommandList>
     </Command>
