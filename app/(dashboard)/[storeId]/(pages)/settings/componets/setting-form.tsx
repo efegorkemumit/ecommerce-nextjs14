@@ -15,6 +15,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import ApiAlert from '@/components/ApiAlert';
+import { Useorgin } from '@/hooks/use-origin';
 
 
 interface SettingFormsProps{
@@ -33,6 +35,7 @@ const SettingForms = ({initalData}:SettingFormsProps) => {
 
     const params = useParams();
     const router = useRouter();
+    const origin = Useorgin();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -138,7 +141,16 @@ className='ml-auto mt-5'>Contunie</Button>
                   </Form>
 
 
+                  <Separator className="my-4" />
 
+
+
+                  <ApiAlert title='NEXT_URL_PUBLIC'
+                  description={`${origin}/api/${params.storeId}`}
+                  variant='admin'
+                  />
+
+                
 
     
     
