@@ -14,6 +14,8 @@ import { Separator } from '@/components/ui/separator';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import ImageUpload from '@/components/ImageUpload';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface  BillboardFormsProps{
     initalData : Billboard | null
@@ -55,6 +57,18 @@ const BillboardForms = ({initalData}:BillboardFormsProps) => {
     const onSubmit = async(data: SettingFormValues)=>{
         try {
             setLoading(true);
+            if(initalData){
+              await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data)
+
+            }
+            else{
+              await axios.post(`/api/${params.storeId}/billboards`, data)
+
+            }
+
+            router.refresh();
+            router.push(`/${params.storeId}/billboard`);
+            toast.success(toastMessage);
            
             
         } catch (error) {
