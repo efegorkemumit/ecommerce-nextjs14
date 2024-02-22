@@ -13,6 +13,7 @@ import { Trash } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import ImageUpload from '@/components/ImageUpload';
 
 interface  BillboardFormsProps{
     initalData : Billboard | null
@@ -135,12 +136,16 @@ const BillboardForms = ({initalData}:BillboardFormsProps) => {
                         <FormItem>
                           <FormLabel>Background Image</FormLabel>
                           <FormControl>
-
+                            <ImageUpload
+                            value={field.value ? [field.value]: []}
+                            disabled={loading}
+                            onChange={(url)=>field.onChange(url)}
+                            onRemove={() => field.onChange('')}
                             
                             
+                            >
 
-
-
+                            </ImageUpload>     
                           </FormControl>
                           <FormMessage/>
 
@@ -149,11 +154,13 @@ const BillboardForms = ({initalData}:BillboardFormsProps) => {
                       )}/>
 
 
+<div className='h-8'></div>
+
                       <FormField control={form.control}
                       name="label"
                       render={({field})=>(
                         <FormItem>
-                          <FormLabel>label</FormLabel>
+                          <FormLabel>Label</FormLabel>
                           <FormControl>
                             <Input 
                             disabled={loading} 
