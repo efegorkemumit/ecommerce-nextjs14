@@ -22,6 +22,12 @@ const Menu = () => {
             active: pathname === `/${params.storeId}/billboard`
         },
 
+        {
+            href: `/${params.storeId}/categories`,
+            label: "Category",
+            active: pathname === `/${params.storeId}/categories`
+        },
+
     ]
 
   return (
