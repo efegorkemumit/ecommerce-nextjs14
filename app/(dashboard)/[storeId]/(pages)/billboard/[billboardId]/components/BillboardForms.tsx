@@ -66,8 +66,9 @@ const BillboardForms = ({initalData}:BillboardFormsProps) => {
 
             }
 
-            router.refresh();
+         
             router.push(`/${params.storeId}/billboard`);
+            router.refresh();
             toast.success(toastMessage);
            
             
