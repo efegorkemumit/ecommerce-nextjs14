@@ -69,7 +69,7 @@ export async function POST(req:Request, {params}: {params: {storeId:string}}) {
                 isArchived,
                 isFeatured,
 
-                storeId:params.storeId
+                storeId:params.storeId,
                 images:{
                     createMany:{
                         data: [

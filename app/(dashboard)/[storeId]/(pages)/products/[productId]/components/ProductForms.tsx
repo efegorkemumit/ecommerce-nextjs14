@@ -11,7 +11,7 @@ import HeaderTitle from '@/components/HeaderTitle';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import ImageUpload from '@/components/ImageUpload';
 import axios from 'axios';
@@ -34,7 +34,6 @@ interface  ProductFormsProps{
 
     } | null;
     categories : Category[];
-    products: product[];
     sizes : Size[];
     colors : Color[];
 }
@@ -43,10 +42,10 @@ type ProductFormValues = z.infer<typeof formSchema>
 
 const formSchema = z.object({
     name:z.string().min(1),
-    images : z.object({url:z.string}).array(),
+    images : z.object({url:z.string()}).array(),
     price: z.coerce.number().min(1),
     categoryId: z.string().min(1),
-    productId: z.string().min(1),
+    colorId: z.string().min(1),
     sizeId: z.string().min(1),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional()
@@ -64,18 +63,24 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
+
+    const defaultValues = initalData ? {
+      ...initalData,
+      price:parseFloat(String(initalData?.price)),
+    } : {
+      name : '',
+      images: [],
+      price: 0,
+      categoryId:'',
+      colorId: '',
+      sizeId:'',
+      isFeatured:false,
+      isArchived:false
+    }
+
     const form = useForm<ProductFormValues>({
         resolver:zodResolver(formSchema),
-        defaultValues:initalData || {
-          name : '',
-          images: [],
-          price: 0,
-          categoryId:'',
-          productId: '',
-          sizeId:'',
-          isFeatured:false,
-          isArchived:false
-        }
+        defaultValues
     })
 
 
@@ -174,7 +179,7 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
 
             
     <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-x-7 w-full'>
 
 
                     <FormField control={form.control}
@@ -200,7 +205,9 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
                         </FormItem>
                       )}/>
 
+<div className='h-8'></div>
 
+<div className='md:grid md:grid-cols-3 gap-8'>
 
                     <FormField control={form.control}
                       name="name"
@@ -221,7 +228,7 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
                       )}/>
 
 
-<div className='h-8'></div>
+
 
                       <FormField control={form.control}
                       name="price"
@@ -323,7 +330,7 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
 <FormField control={form.control}
                       name="sizeId"
                       render={({field})=>(
-                        <FormItem >
+                        <FormItem className='mb-4' >
                           <FormLabel>Size</FormLabel>
                          
               <Select disabled={loading} onValueChange={field.onChange}
@@ -357,15 +364,26 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
                         </FormItem>
                       )}/>
 
+
 <FormField control={form.control}
                       name="isFeatured"
                       render={({field})=>(
-                        <FormItem >
+                        <FormItem className='flex flex-row items-start
+                        space-x-3 rounded-md border p-5 bg-slate-100 mb-4' >
                           <FormLabel>isFeatured</FormLabel>
+
+                          
+                         
                           <FormControl>
                           <div className="flex items-center space-x-2">
       <Checkbox id="terms" checked={field.value} onCheckedChange={field.onChange}  />
-   
+     
+     <div className='space-y-1 leading-none'>
+      <FormLabel>Featured</FormLabel>
+      <FormDescription>
+        Lorem ipsum dolor sit amet consectetur adipisicing.
+      </FormDescription>
+      </div>
     </div>
 
 
@@ -376,16 +394,21 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
 
                         </FormItem>
                       )}/>
-
 <FormField control={form.control}
                       name="isArchived"
                       render={({field})=>(
-                        <FormItem >
+                        <FormItem className='flex flex-row items-start
+                        space-x-3 rounded-md border p-5 bg-slate-100 ' >
                           <FormLabel>isArchived</FormLabel>
                           <FormControl>
                           <div className="flex items-center space-x-2">
       <Checkbox id="terms" checked={field.value} onCheckedChange={field.onChange}  />
-   
+      <div className='space-y-1 leading-none'>
+      <FormLabel>Archived</FormLabel>
+      <FormDescription>
+        Lorem ipsum dolor sit amet consectetur adipisicing.
+      </FormDescription>
+      </div>
     </div>
 
 
@@ -398,6 +421,8 @@ const ProductForms = ({initalData, categories, sizes , products, colors}:Product
                       )}/>
 
 
+</div>
+<div className='h-8'></div>
 
 
                 <Button  disabled={loading}  variant="default" type='submit' 
