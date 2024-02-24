@@ -1,5 +1,6 @@
 'use client'
 
+import { color } from '@prisma/client'
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,34 +16,22 @@ import { Input } from '@/components/ui/input';
 import ImageUpload from '@/components/ImageUpload';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Billboard, Category } from '@prisma/client';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
-
-interface  categoryFormsProps{
-    initalData : Category | null
-    billboards : Billboard[];
+interface  colorFormsProps{
+    initalData : color | null
 }
 
-type categoryFormValues = z.infer<typeof formSchema>
+type colorFormValues = z.infer<typeof formSchema>
 
 const formSchema = z.object({
     name:z.string().min(2),
-    billboardId : z.string().min(2),
+    value : z.string().min(2),
 })
 
 
 
 
-const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
+const ColorForms = ({initalData}:colorFormsProps) => {
 
     const params = useParams();
     const router = useRouter();
@@ -53,15 +42,15 @@ const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
     const form = useForm<SettingFormValues>({
         resolver:zodResolver(formSchema),
         defaultValues:initalData || {
-          name : '',
-          billboardId: ''
+          label : '',
+          imageUrl: ''
         }
     })
 
 
-    const title = initalData ? 'Edit category' : 'Create category';
-    const description = initalData ? 'Edit a category' : 'Add a new category';
-    const toastMessage = initalData ? "category updated" : "category created"
+    const title = initalData ? 'Edit color' : 'Create color';
+    const description = initalData ? 'Edit a color' : 'Add a new color';
+    const toastMessage = initalData ? "color updated" : "color created"
     const ButtonText = initalData ? "Save Changes" : "Create"
 
 
@@ -69,16 +58,16 @@ const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
         try {
             setLoading(true);
             if(initalData){
-              await axios.patch(`/api/${params.storeId}/categories/${params.categoryId}`, data)
+              await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data)
 
             }
             else{
-              await axios.post(`/api/${params.storeId}/categories`, data)
+              await axios.post(`/api/${params.storeId}/colors`, data)
 
             }
 
          
-            router.push(`/${params.storeId}/categories`);
+            router.push(`/${params.storeId}/colors`);
             router.refresh();
             toast.success(toastMessage);
            
@@ -156,12 +145,7 @@ const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
     <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
 
-                 
-
-
-<div className='h-8'></div>
-
-                      <FormField control={form.control}
+                    <FormField control={form.control}
                       name="name"
                       render={({field})=>(
                         <FormItem>
@@ -169,7 +153,7 @@ const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
                           <FormControl>
                             <Input 
                             disabled={loading} 
-                            placeholder='Name ' {...field}>
+                            placeholder='Enter Name ' {...field}>
 
                             </Input>
                           </FormControl>
@@ -180,38 +164,21 @@ const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
                       )}/>
 
 
-<FormField control={form.control}
-                      name="billboardId"
+<div className='h-8'></div>
+
+                      <FormField control={form.control}
+                      name="value"
                       render={({field})=>(
                         <FormItem>
-                          <FormLabel>Billboard</FormLabel>
-                         
-              <Select disabled={loading} onValueChange={field.onChange}
-              value={field.value} defaultValue={field.value}>
-                <SelectTrigger className="w-full">
-                  <SelectValue defaultValue={field.value} placeholder="Select a Billboard" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {billboards.map((billboards)=>(
-                      <SelectItem key={billboards.id}
-                       value={billboards.id}>{billboards.label}</SelectItem>
+                          <FormLabel>Value</FormLabel>
+                          <FormControl>
+                            <Input 
+                            disabled={loading} 
+                            placeholder='Enter Value ' {...field}>
 
-                    ))}
-
-                 
-                  
-
-
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-                         
-                         
-                         
-                         
-                         
-                         <FormMessage/>
+                            </Input>
+                          </FormControl>
+                          <FormMessage/>
 
 
                         </FormItem>
@@ -236,4 +203,4 @@ const CategoryForms = ({initalData, billboards}:categoryFormsProps) => {
   )
 }
 
-export default CategoryForms
+export default ColorForms
