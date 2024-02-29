@@ -46,6 +46,13 @@ const Menu = () => {
             active: pathname === `/${params.storeId}/products`
         },
 
+        {
+            href: `/${params.storeId}/orders`,
+            label: "Order",
+            active: pathname === `/${params.storeId}/orders`
+        },
+
+
 
     ]
 
