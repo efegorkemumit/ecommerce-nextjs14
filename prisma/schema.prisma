@@ -21,6 +21,9 @@ model Store{
   colors             Color[] @relation("StoreToColor")
   sizes              Size[] @relation("StoreToSize")
   products           Product[] @relation("StoreToProduct")
+  orders           Order[] @relation("StoreToOrder")
+
+  
 
 }
 
@@ -97,6 +100,7 @@ model Product{
    images             Image[]
    createAt           DateTime @default(now())
    updatedAt          DateTime @updatedAt
+   orderItems         OrderItem[]
 
    @@index([storeId])
    @@index([categoryId])
@@ -115,4 +119,29 @@ model Image{
    updatedAt          DateTime @updatedAt
 
    @@index([productId])
+}
+
+model Order {
+  id        String    @id @default(uuid())
+  storeId     String    // Foreign Key to Store
+  store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[] // Relation to OrderItem model
+  isPaid     Boolean   @default(false)
+  phone      String    @default("")
+  address    String    @default("")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  // Foreign Key to Order
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String  // Foreign Key to Product
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
 }
